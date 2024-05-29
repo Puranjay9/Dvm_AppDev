@@ -1,5 +1,3 @@
-import 'package:dvmapp/api_data.dart';
-import 'package:dvmapp/main.dart';
 import 'package:dvmapp/pokemon_data.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +39,14 @@ class _BoxState extends State<Box> {
   }
 
   @override
+  void didUpdateWidget(covariant Box oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.url != widget.url){
+      _pokemon_Data = pokemon_details();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return
       FutureBuilder(future: _pokemon_Data,
@@ -54,80 +60,100 @@ class _BoxState extends State<Box> {
             }else{
               var data = snapshot.data!;
               var name = data['species']['name'];
-               return Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 30, right: 10, top: 20),
-                    padding: const EdgeInsets.only(left: 65, top: 40),
-                    width: MediaQuery.of(context).size.width,
-                    height: 150,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/img/page.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '#01',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                         Text(
-                          name.toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: WidgetVisibility,
-                              child: Image.asset('assets/img/des.png',
-                                width: 35,
+              var index = data['id'].toString();
+              var imgUrl = data['sprites']['other']['official-artwork']['front_default'];
+               return Stack(
+                 children: [
+               Column(
+               children: [
+               Container(
+               margin: const EdgeInsets.only(left: 30, right: 10, top: 20),
+            padding: const EdgeInsets.only(left: 65, top: 40 , right: 0),
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            decoration: const BoxDecoration(
+            image: DecorationImage(
+            image: AssetImage('assets/img/page.png'),
+            fit: BoxFit.fill,
+            ),
+            ),
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            Text(
+            '#$index' ,
+            style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            ),
+            ),
+            Text(
+            name.toUpperCase(),
+            style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            ),
+            ),
+            Row(
+            children: [
+            GestureDetector(
+            onTap: WidgetVisibility,
+            child: Image.asset('assets/img/des.png',
+            width: 35,
 
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+            ),
+            ),
+            ],
+            ),
+            ],
+            ),
+            ),
+
+
+            Visibility(
+            visible: _isWidgetVisible,
+            child: Container(
+            margin: const EdgeInsets.only(left: 30, right: 10),
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            decoration: const BoxDecoration(
+            image: DecorationImage(
+            image: AssetImage('assets/img/page.png'),
+            fit: BoxFit.fill,
+            ),
+            ),
+            child: const Text(''),
+            ),
+            ),
+
+
+
+            Container(
+            margin: const EdgeInsets.only(left: 30, right: 10),
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+            image: DecorationImage(
+            image: AssetImage('assets/img/tear.png'),
+            fit: BoxFit.fill,
+            ),
+            ),
+            child: const Text(''),
+            ),
+            ],
+            ),
+                   
+            Positioned(
+                top: 20,
+                right: 0,
+                width: MediaQuery.of(context).size.width/2.5,
+                child: Expanded(
+                  child: Image(
+                    image: NetworkImage(imgUrl),
                   ),
-
-
-                  if (_isWidgetVisible)
-                    Container(
-                      margin: const EdgeInsets.only(left: 30, right: 10),
-                      width: MediaQuery.of(context).size.width,
-                      height: 150,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/img/page.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      child: const Text(''),
-                    ),
-
-
-                  Container(
-                    margin: const EdgeInsets.only(left: 30, right: 10),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/img/tear.png'),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    child: const Text(''),
-                  ),
-                ],
-              );
+                )  ,
+            )
+                 ],
+               );
             }
           });
 

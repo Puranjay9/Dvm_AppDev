@@ -74,7 +74,6 @@ class _BoxState extends State<Box> {
           } else {
             var data = snapshot.data!;
             var name = widget.name;
-            var index = data['id'].toString();
             var imgUrl =
                 data['sprites']['other']['official-artwork']['front_default'];
             return Stack(
@@ -98,7 +97,7 @@ class _BoxState extends State<Box> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '#$index',
+                            '#${widget.index +1}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -113,10 +112,22 @@ class _BoxState extends State<Box> {
                           ),
                           Row(
                             children: [
+                               Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: const Image(image: AssetImage('assets/img/type1.png'),
+                                ),
+                              ),
+
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: const Image(image: AssetImage('assets/img/type2.png'),
+                                ),
+                              ),
+
                               GestureDetector(
                                 onTap: WidgetVisibility,
                                 child: Image.asset(
-                                  'assets/img/des.png',
+                                  _isWidgetVisible ? 'assets/img/back.png' : 'assets/img/des.png' ,
                                   width: 35,
                                 ),
                               ),

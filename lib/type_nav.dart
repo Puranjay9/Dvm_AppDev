@@ -22,11 +22,11 @@ class _TypeNavState extends State<TypeNav> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.only(bottom: 10),
           child: GestureDetector(
             onTap: _onTapAction,
             child: Container(
-              width: tap? 75 :90,
+              width: tap? 90 : 75,
               height: 70,
               decoration: BoxDecoration(
                 color: Colors.redAccent,
@@ -47,7 +47,7 @@ class _TypeNavState extends State<TypeNav> {
             ),]
               ),
               child:  Center(child :Text( widget.name,
-               style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w900 ),
+               style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w900 ),
               ),
             ),),
           )

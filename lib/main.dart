@@ -1,9 +1,13 @@
 import 'package:dvmapp/api_data.dart';
 import 'package:dvmapp/box.dart';
+import 'package:dvmapp/splash.dart';
 import 'package:dvmapp/type_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -17,7 +21,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const Splash(),
     );
   }
 }
@@ -31,35 +35,42 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future _futureData;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List _allPokemons = [];
   List _filteredPokemons = [];
 
   Future fetchData() async {
-    api_Data apiData = api_Data();
-    var data = await apiData.getData();
-    if (data == null) {
-      return null;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cachedData = prefs.getString('pokemon_data');
+    if (cachedData != null) {
+      return json.decode(cachedData);
     } else {
-      return data['results'];
+      api_Data apiData = api_Data();
+      var data = await apiData.getData();
+      if (data == null) {
+        return null;
+      } else {
+        await prefs.setString('pokemon_data', json.encode(data['results']));
+        return data['results'];
+      }
     }
   }
 
-  void _filterPokemons(){
-      final query = _searchController.text.toLowerCase();
-      setState(() {
-        _filteredPokemons = _allPokemons.where((pokemon){
-          final name = pokemon['name'].toLowerCase();
-          return name.contains(query);
-        }).toList();
-      });
+  void _filterPokemons() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredPokemons = _allPokemons.where((pokemon) {
+        final name = pokemon['name'].toLowerCase();
+        return name.contains(query);
+      }).toList();
+    });
   }
 
   @override
   void initState() {
     super.initState();
     _futureData = fetchData();
-    _futureData.then((data){
+    _futureData.then((data) {
       setState(() {
         _allPokemons = data;
         _filteredPokemons = data;
@@ -73,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _searchController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,77 +100,75 @@ class _MyHomePageState extends State<MyHomePage> {
           } else {
             return Stack(
               children: [
-            Column(
-            children: [
-            const SizedBox(
-            height: 110,
-              child: Center(
-                child: Text(
-                  'Pokedex',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 110,
+                      child: Center(
+                        child: Text(
+                          'Pokedex',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 70,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 13),
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                  width: 1.7, color: Colors.white),
+                            ),
+                            hintText: 'Search',
+                            hintStyle: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _filteredPokemons.length,
+                        itemBuilder: (context, index) {
+                          var pokemon = _filteredPokemons[index];
+                          var url = pokemon['url'];
+                          var name = pokemon['name'];
+                          return Box(
+                            index: index,
+                            url: url,
+                            name: name,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const Positioned(
+                  top: 200,
+                  left: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TypeNav(name: 'GRASS'),
+                      TypeNav(name: 'ICE'),
+                      TypeNav(name: 'FIRE'),
+                    ],
                   ),
                 ),
-              ),
-            ),
-          SizedBox(
-          height: 70,
-          child: Padding(
-          padding: const EdgeInsets.only(left: 13),
-          child: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(width: 1.7, color: Colors.white),
-          ),
-          hintText: 'Search',
-          hintStyle: const TextStyle(color: Colors.white, fontSize: 20),
-          prefixIcon: const Icon(
-          Icons.search,
-          size: 30,
-          color: Colors.white,
-          ),
-          ),
-          style: const TextStyle(color:  Colors.white),
-          ),
-          ),
-          ),
-          Expanded(
-          child: ListView.builder(
-          itemCount: _filteredPokemons.length,
-          itemBuilder: (context, index) {
-          var pokemon = _filteredPokemons[index];
-          var url = pokemon['url'];
-          return Box(
-          index: index,
-          url: url,
-          );
-          },
-          )
-          ),
-          ],
-          ),
-                const Positioned(
-                    top: 200,
-                    left: 0,
-                    child:Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TypeNav(
-                            name : 'GRASS'
-                        ),
-                        TypeNav(
-                            name : 'ICE'
-                        ),
-                        TypeNav(
-                            name : 'FIRE'
-                        ),
-                      ],
-                    )
-                )
               ],
             );
           }

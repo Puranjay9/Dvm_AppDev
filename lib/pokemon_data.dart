@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Pokemon{
@@ -17,9 +16,21 @@ class Pokemon{
     Uri pokemonUri = Uri.parse(url);
     http.Response response = await http.get(pokemonUri);
 
-    String response_data = response.body;
-    var data = jsonDecode(response_data);
+    String responseData = response.body;
+    var data = jsonDecode(responseData);
     return data;
+  }
+
+  Future getDescription(int index) async{
+    final String url = 'https://pokeapi.co/api/v2/pokemon-species/$index/';
+    Uri desUri = Uri.parse(url);
+    http.Response response = await http.get(desUri);
+
+    String responseData = response.body;
+    var data =jsonDecode(responseData);
+    var description = data['flavor_text_entries'][0]['flavor_text'];
+    return description;
+    // flavor_text_entries[0].flavor_text
   }
 
 }

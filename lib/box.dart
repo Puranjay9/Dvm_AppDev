@@ -170,10 +170,8 @@ class _BoxState extends State<Box> {
                   top: 20,
                   right: 0,
                   width: MediaQuery.of(context).size.width / 2.5,
-                  child: Expanded(
-                    child: Image(
-                      image: NetworkImage(imgUrl),
-                    ),
+                  child: Image(
+                    image: NetworkImage(imgUrl),
                   ),
                 )
               ],

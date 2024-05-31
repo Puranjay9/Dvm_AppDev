@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dvmapp/api_data.dart';
 import 'package:dvmapp/box.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +29,11 @@ class _PokemonListState extends State<PokemonList> {
       api_Data apiData = api_Data(widget.fetchUrl);
       final data = await apiData.getData();
       if (data != null) {
-        if (widget.fetchUrl == 'https://pokeapi.co/api/v2/pokemon/') {
+        if (widget.fetchUrl == 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1302') {
           await prefs.setString(widget.fetchUrl, json.encode(data['results']));
           return (data['results'] as List<dynamic>);
         } else if (data.containsKey('pokemon')) {
-          await prefs.setString(widget.fetchUrl, jsonEncode(data['pokemon']));
-          return (data['pokemon'] as List<dynamic>).map((entry) {
+          List<Map<String, dynamic>?> processedData = (data['pokemon'] as List<dynamic>).map((entry) {
             final pokemon = entry['pokemon'];
             if (pokemon != null && pokemon['name'] != null && pokemon['url'] != null) {
               return {'name': pokemon['name'], 'url': pokemon['url']};
@@ -43,6 +41,9 @@ class _PokemonListState extends State<PokemonList> {
               return null;
             }
           }).where((pokemon) => pokemon != null).toList();
+
+          await prefs.setString(widget.fetchUrl, json.encode(processedData));
+          return processedData;
         } else {
           return [];
         }
@@ -51,9 +52,6 @@ class _PokemonListState extends State<PokemonList> {
       }
     }
   }
-
-
-
 
 
   void _filterPokemons() {
@@ -79,26 +77,26 @@ class _PokemonListState extends State<PokemonList> {
     widget.searchController.addListener(_filterPokemons);
   }
 
+  @override
+  void didUpdateWidget(covariant PokemonList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.fetchUrl != widget.fetchUrl) {
+      setState(() {
+        _futureData = fetchData();
+        _futureData.then((data) {
+          setState(() {
+            _allPokemons = data;
+            _filteredPokemons = List.from(_allPokemons);
+          });
+        });
+      });
+    }
+  }
 
   @override
   void dispose() {
     widget.searchController.removeListener(_filterPokemons);
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant PokemonList oldWidget) {
-    if (oldWidget.fetchUrl != widget.fetchUrl) {
-      _futureData = fetchData();
-      _futureData.then((data) {
-        setState(() {
-          _allPokemons = data;
-          _filteredPokemons = data;
-        });
-      });
-      widget.searchController.addListener(_filterPokemons);
-    }
-    super.didUpdateWidget(oldWidget);
   }
 
   @override

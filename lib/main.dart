@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String fetchingUrl() {
-    switch(_selectedType){
+    switch(_selectedType) {
       case 'grass':
         return 'https://pokeapi.co/api/v2/type/12/';
       case 'ice':
@@ -49,11 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
       case 'fire':
         return 'https://pokeapi.co/api/v2/type/10/';
       case 'default':
-        return 'https://pokeapi.co/api/v2/pokemon/';
-      default :
-        return '';
+        return 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1302';
+      default:
+        return 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1302';
     }
-}
+  }
 
   @override
   void dispose() {
@@ -130,6 +130,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-

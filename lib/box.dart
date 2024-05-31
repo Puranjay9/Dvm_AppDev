@@ -74,6 +74,7 @@ class _BoxState extends State<Box> {
           } else {
             var data = snapshot.data!;
             var name = widget.name;
+            var id = data['id'];
             var imgUrl =
                 data['sprites']['other']['official-artwork']['front_default'];
             return Stack(
@@ -149,7 +150,7 @@ class _BoxState extends State<Box> {
                           ),
                         ),
                         child: Center(
-                          child: Description(index: widget.index + 1, url: widget.url),
+                          child: Description(index: id, url: widget.url),
                         )
                       ),
                     ),

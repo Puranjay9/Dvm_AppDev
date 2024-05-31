@@ -65,6 +65,17 @@ flutter:
   assets:
     - assets/img/
 
+  fonts:
+    - family: PT Sans
+      fonts:
+        - asset: assets/fonts/ProductSans-Regular.ttf
+    - family: Milord Book
+      fonts:
+        - asset: assets/fonts/MilordBook-Regular.ttf
+          weight: 700
+
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -90,3 +101,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

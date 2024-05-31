@@ -98,37 +98,41 @@ class _BoxState extends State<Box> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '#${widget.index +1}',
+                            '#${widget.index + 1}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
+                              fontFamily: 'PT Sans',
                             ),
                           ),
                           Text(
                             name.toUpperCase(),
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 25,
                               fontWeight: FontWeight.w900,
+                              fontFamily: 'PT Sans',
                             ),
                           ),
                           Row(
                             children: [
-                               Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: const Image(image: AssetImage('assets/img/type1.png'),
-                                ),
-                              ),
-
                               Container(
                                 margin: const EdgeInsets.only(right: 10),
-                                child: const Image(image: AssetImage('assets/img/type2.png'),
+                                child: const Image(
+                                  image: AssetImage('assets/img/type1.png'),
                                 ),
                               ),
-
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: const Image(
+                                  image: AssetImage('assets/img/type2.png'),
+                                ),
+                              ),
                               GestureDetector(
                                 onTap: WidgetVisibility,
                                 child: Image.asset(
-                                  _isWidgetVisible ? 'assets/img/back.png' : 'assets/img/des.png' ,
+                                  _isWidgetVisible
+                                      ? 'assets/img/back.png'
+                                      : 'assets/img/des.png',
                                   width: 35,
                                 ),
                               ),
@@ -140,19 +144,19 @@ class _BoxState extends State<Box> {
                     Visibility(
                       visible: _isWidgetVisible,
                       child: Container(
-                        margin: const EdgeInsets.only(left: 30, right: 10),
-                        width: MediaQuery.of(context).size.width,
-                        height: 150,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/img/page.png'),
-                            fit: BoxFit.fill,
+                          margin: const EdgeInsets.only(left: 30, right: 10),
+                          width: MediaQuery.of(context).size.width,
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/img/page.png'),
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Description(index: id, url: widget.url),
-                        )
-                      ),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 70 , right: 10),
+                            child: Description(index: id, url: widget.url),
+                          )),
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 30, right: 10),

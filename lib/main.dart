@@ -77,7 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 40,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: 'Milord Book',
                     ),
                   ),
                 ),

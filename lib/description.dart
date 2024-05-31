@@ -51,14 +51,23 @@ class _DescriptionState extends State<Description> {
     return FutureBuilder(future: _pokemonDescription,
         builder: (context , snapshot){
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: Text('Loading...'));
+        return const Text('Loading...');
       } else if (snapshot.hasError) {
         return Center(child: Text('Error: ${snapshot.error}'));
       } else if (!snapshot.hasData) {
         return const Center(child: Text('No data found'));
       }else{
         String description = snapshot.data!.toString();
-        return Text(description);
+        return Text(
+          description,
+          maxLines: null,
+          softWrap: true,
+          style: const TextStyle(
+          fontFamily: 'PT Sans',
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+        );
       }
       });
   }

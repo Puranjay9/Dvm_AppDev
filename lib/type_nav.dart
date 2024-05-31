@@ -57,7 +57,7 @@ class _TypeNavState extends State<TypeNav> {
               child: Center(
                 child: Text(
                   widget.name,
-                  style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+                  style: const TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w100 , fontFamily: 'Milord Book'),
                 ),
               ),
             ),

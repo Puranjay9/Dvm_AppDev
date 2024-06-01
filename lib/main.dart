@@ -33,15 +33,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String _selectedType = 'default';
   final TextEditingController _searchController = TextEditingController();
+  String? _tappedTypeNav;
 
   void _onTypeSelected(String type) {
     setState(() {
-      _selectedType = type.toLowerCase();
+      if (_tappedTypeNav == type) {
+        _selectedType = 'default';
+        _tappedTypeNav = null;
+      } else {
+        _selectedType = type.toLowerCase();
+        _tappedTypeNav = type;
+      }
     });
   }
 
   String fetchingUrl() {
-    switch(_selectedType) {
+    switch (_selectedType) {
       case 'grass':
         return 'https://pokeapi.co/api/v2/type/12/';
       case 'ice':
@@ -64,69 +71,85 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     String fetchUrl = fetchingUrl();
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              const SizedBox(
-                height: 110,
-                child: Center(
-                  child: Text(
-                    'Pokedex',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w100,
-                      fontFamily: 'Milord Book',
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 70,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 13),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(width: 1.7, color: Colors.white),
-                      ),
-                      hintText: 'Search',
-                      hintStyle: const TextStyle(color: Colors.white, fontSize: 20),
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: PokemonList(
-                  fetchUrl: fetchUrl,
-                  searchController: _searchController,
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 200,
-            left: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
               children: [
-                TypeNav(name: 'GRASS', onTypeSelected: _onTypeSelected),
-                TypeNav(name: 'ICE', onTypeSelected: _onTypeSelected),
-                TypeNav(name: 'FIRE', onTypeSelected: _onTypeSelected),
+                const SizedBox(
+                  height: 110,
+                  child: Center(
+                    child: Text(
+                      'Pokedex',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w100,
+                        fontFamily: 'Milord Book',
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 13),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                              width: 1.7, color: Colors.white),
+                        ),
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(
+                            color: Colors.white, fontSize: 20),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: PokemonList(
+                    fetchUrl: fetchUrl,
+                    searchController: _searchController,
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
+            Positioned(
+              top: 200,
+              left: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TypeNav(
+                    name: 'GRASS',
+                    isTapped: _tappedTypeNav == 'GRASS',
+                    onTap: _onTypeSelected,
+                  ),
+                  TypeNav(
+                    name: 'ICE',
+                    isTapped: _tappedTypeNav == 'ICE',
+                    onTap: _onTypeSelected,
+                  ),
+                  TypeNav(
+                    name: 'FIRE',
+                    isTapped: _tappedTypeNav == 'FIRE',
+                    onTap: _onTypeSelected,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

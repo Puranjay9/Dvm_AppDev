@@ -1,28 +1,16 @@
 import 'package:flutter/material.dart';
 
-class TypeNav extends StatefulWidget {
+class TypeNav extends StatelessWidget {
   final String name;
-  final Function(String) onTypeSelected;
+  final bool isTapped;
+  final Function(String) onTap;
 
-  const TypeNav({super.key, required this.name, required this.onTypeSelected});
-
-  @override
-  State<TypeNav> createState() => _TypeNavState();
-}
-
-class _TypeNavState extends State<TypeNav> {
-  bool tap = false;
-
-  void _onTapAction() {
-    setState(() {
-      tap = !tap;
-      if(tap){
-        widget.onTypeSelected(widget.name);
-      }else{
-        widget.onTypeSelected('default');
-      }
-    });
-  }
+  const TypeNav({
+    super.key,
+    required this.name,
+    required this.isTapped,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +19,9 @@ class _TypeNavState extends State<TypeNav> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: GestureDetector(
-            onTap: _onTapAction,
+            onTap: () => onTap(name),
             child: Container(
-              width: tap ? 90 : 75,
+              width: isTapped ? 90 : 75,
               height: 70,
               decoration: BoxDecoration(
                 color: Colors.redAccent,
@@ -56,8 +44,13 @@ class _TypeNavState extends State<TypeNav> {
               ),
               child: Center(
                 child: Text(
-                  widget.name,
-                  style: const TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w100 , fontFamily: 'Milord Book'),
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w100,
+                    fontFamily: 'Milord Book',
+                  ),
                 ),
               ),
             ),

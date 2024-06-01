@@ -64,7 +64,7 @@ class _DescriptionState extends State<Description> {
           softWrap: true,
           style: const TextStyle(
           fontFamily: 'PT Sans',
-          fontSize: 15,
+          fontSize: 17,
           fontWeight: FontWeight.bold,
         ),
         );

@@ -83,7 +83,7 @@ class _BoxState extends State<Box> {
                   children: [
                     Container(
                       margin:
-                          const EdgeInsets.only(left: 30, right: 10, top: 20),
+                          const EdgeInsets.only(left: 20, right: 20, top: 20),
                       padding:
                           const EdgeInsets.only(left: 65, top: 40, right: 0),
                       width: MediaQuery.of(context).size.width,
@@ -144,7 +144,7 @@ class _BoxState extends State<Box> {
                     Visibility(
                       visible: _isWidgetVisible,
                       child: Container(
-                          margin: const EdgeInsets.only(left: 30, right: 10),
+                          margin: const EdgeInsets.only(left: 20, right: 20),
                           width: MediaQuery.of(context).size.width,
                           height: 150,
                           decoration: const BoxDecoration(
@@ -159,7 +159,7 @@ class _BoxState extends State<Box> {
                           )),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: 30, right: 10),
+                      margin: const EdgeInsets.only(left: 20, right: 20),
                       width: MediaQuery.of(context).size.width,
                       decoration: const BoxDecoration(
                         image: DecorationImage(

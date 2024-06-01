@@ -6,9 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonList extends StatefulWidget {
   final String fetchUrl;
-  final TextEditingController searchController;
+  final String searchQuery;
 
-  const PokemonList({Key? key, required this.fetchUrl, required this.searchController}) : super(key: key);
+  const PokemonList({Key? key, required this.fetchUrl, required this.searchQuery}) : super(key: key);
 
   @override
   _PokemonListState createState() => _PokemonListState();
@@ -53,9 +53,8 @@ class _PokemonListState extends State<PokemonList> {
     }
   }
 
-
   void _filterPokemons() {
-    final query = widget.searchController.text.toLowerCase();
+    final query = widget.searchQuery.toLowerCase();
     setState(() {
       _filteredPokemons = _allPokemons.where((pokemon) {
         final name = pokemon['name'].toLowerCase();
@@ -72,31 +71,26 @@ class _PokemonListState extends State<PokemonList> {
       setState(() {
         _allPokemons = data;
         _filteredPokemons = List.from(_allPokemons);
+        _filterPokemons();
       });
     });
-    widget.searchController.addListener(_filterPokemons);
   }
 
   @override
   void didUpdateWidget(covariant PokemonList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.fetchUrl != widget.fetchUrl) {
+    if (oldWidget.fetchUrl != widget.fetchUrl || oldWidget.searchQuery != widget.searchQuery) {
       setState(() {
         _futureData = fetchData();
         _futureData.then((data) {
           setState(() {
             _allPokemons = data;
             _filteredPokemons = List.from(_allPokemons);
+            _filterPokemons();
           });
         });
       });
     }
-  }
-
-  @override
-  void dispose() {
-    widget.searchController.removeListener(_filterPokemons);
-    super.dispose();
   }
 
   @override
@@ -118,7 +112,6 @@ class _PokemonListState extends State<PokemonList> {
               var url = pokemon['url'];
               var name = pokemon['name'];
               return Box(
-                index: index,
                 url: url,
                 name: name,
               );

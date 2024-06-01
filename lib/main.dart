@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _selectedType = 'default';
   final TextEditingController _searchController = TextEditingController();
   String? _tappedTypeNav;
+  String _searchQuery = '';
 
   void _onTypeSelected(String type) {
     setState(() {
@@ -44,6 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
         _selectedType = type.toLowerCase();
         _tappedTypeNav = type;
       }
+    });
+  }
+
+  void _onSearch() {
+    setState(() {
+      _searchQuery = _searchController.text.toLowerCase();
     });
   }
 
@@ -91,35 +98,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 70,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 13),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: const BorderSide(
-                              width: 1.7, color: Colors.white),
-                        ),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(
-                            color: Colors.white, fontSize: 20),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          size: 30,
-                          color: Colors.white,
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 13 , bottom: 20),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: const BorderSide(
+                            width: 1.7, color: Colors.white),
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(
+                          color: Colors.white, fontSize: 20),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        size: 30,
+                        color: Colors.white,
+                      ),
                     ),
+                    style: const TextStyle(color: Colors.white),
+                    onSubmitted: (value) {
+                      _onSearch();
+                    },
                   ),
                 ),
                 Expanded(
                   child: PokemonList(
                     fetchUrl: fetchUrl,
-                    searchController: _searchController,
+                    searchQuery: _searchQuery,
                   ),
                 ),
               ],

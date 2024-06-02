@@ -103,7 +103,7 @@ class _BoxState extends State<Box> {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    padding: const EdgeInsets.only(left: 65, top: 40, right: 0),
+                    padding: const EdgeInsets.only(left: 65, top: 20, right: 0),
                     width: MediaQuery.of(context).size.width,
                     height: 150,
                     decoration: const BoxDecoration(
@@ -119,16 +119,15 @@ class _BoxState extends State<Box> {
                           id != null ? '#$id' : '',
                           style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'PT Sans',
+                            fontWeight: FontWeight.w100,
+                            fontFamily: 'Future Bdcn',
                           ),
                         ),
                         Text(
                           name.toUpperCase(),
                           style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'PT Sans',
+                            fontSize: 24,
+                            fontFamily: 'Future Bdcn',
                           ),
                         ),
                         Row(

@@ -73,8 +73,9 @@ flutter:
     - family: Milord Book
       fonts:
         - asset: assets/fonts/MilordBook-Regular.ttf
-          weight: 700
-
+    - family: Future Bdcn
+      fonts:
+        - asset: assets/fonts/FuturaBoldCondensedBT.ttf
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
